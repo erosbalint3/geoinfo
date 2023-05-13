@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="data/FeminitasiArany_1.js"></script>
+        <script src="data/Nepsuruseg_2.js"></script>
+        <script>
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:10, minZoom:8
+        }).fitBounds([[44.57077031481231,15.530258389311244],[49.70983698138964,23.510817539948597]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 8,
+            maxZoom: 10,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        function pop_FeminitasiArany_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Megnevezé</strong><br />' + (feature.properties['Megnevezé'] !== null ? autolinker.link(feature.properties['Megnevezé'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Terület</th>\
+                        <td>' + (feature.properties['Terület'] !== null ? autolinker.link(feature.properties['Terület'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Férfiak</th>\
+                        <td>' + (feature.properties['Férfiak'] !== null ? autolinker.link(feature.properties['Férfiak'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Nők</th>\
+                        <td>' + (feature.properties['Nők'] !== null ? autolinker.link(feature.properties['Nők'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Népesség</th>\
+                        <td>' + (feature.properties['Népesség'] !== null ? autolinker.link(feature.properties['Népesség'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Népsűrű</th>\
+                        <td>' + (feature.properties['Népsűrű'] !== null ? autolinker.link(feature.properties['Népsűrű'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Nem arány</th>\
+                        <td>' + (feature.properties['Nem arány'] !== null ? autolinker.link(feature.properties['Nem arány'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_FeminitasiArany_1_0(feature) {
+            if (feature.properties['Nem arány'] >= 285.710000 && feature.properties['Nem arány'] <= 1000.000000 ) {
+                return {
+                pane: 'pane_FeminitasiArany_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(68,162,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Nem arány'] >= 1000.000000 && feature.properties['Nem arány'] <= 1857.142857 ) {
+                return {
+                pane: 'pane_FeminitasiArany_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(86,0,0,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_FeminitasiArany_1');
+        map.getPane('pane_FeminitasiArany_1').style.zIndex = 401;
+        map.getPane('pane_FeminitasiArany_1').style['mix-blend-mode'] = 'normal';
+        var layer_FeminitasiArany_1 = new L.geoJson(json_FeminitasiArany_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_FeminitasiArany_1',
+            layerName: 'layer_FeminitasiArany_1',
+            pane: 'pane_FeminitasiArany_1',
+            onEachFeature: pop_FeminitasiArany_1,
+            style: style_FeminitasiArany_1_0,
+        });
+        bounds_group.addLayer(layer_FeminitasiArany_1);
+        map.addLayer(layer_FeminitasiArany_1);
+        function pop_Nepsuruseg_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Megnevezé</strong><br />' + (feature.properties['Megnevezé'] !== null ? autolinker.link(feature.properties['Megnevezé'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Terület</th>\
+                        <td>' + (feature.properties['Terület'] !== null ? autolinker.link(feature.properties['Terület'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Férfiak</th>\
+                        <td>' + (feature.properties['Férfiak'] !== null ? autolinker.link(feature.properties['Férfiak'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Nők</th>\
+                        <td>' + (feature.properties['Nők'] !== null ? autolinker.link(feature.properties['Nők'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Népesség</th>\
+                        <td>' + (feature.properties['Népesség'] !== null ? autolinker.link(feature.properties['Népesség'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Népsűrű</th>\
+                        <td>' + (feature.properties['Népsűrű'] !== null ? autolinker.link(feature.properties['Népsűrű'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Nem arány</th>\
+                        <td>' + (feature.properties['Nem arány'] !== null ? autolinker.link(feature.properties['Nem arány'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Nepsuruseg_2_0(feature) {
+            if (feature.properties['Népsűrű'] >= 1.741402 && feature.properties['Népsűrű'] <= 39.949431 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Népsűrű'] >= 39.949431 && feature.properties['Népsűrű'] <= 78.356713 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(251,214,214,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Népsűrű'] >= 78.356713 && feature.properties['Népsűrű'] <= 136.440337 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(246,174,174,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Népsűrű'] >= 136.440337 && feature.properties['Népsűrű'] <= 220.037279 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(242,133,133,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Népsűrű'] >= 220.037279 && feature.properties['Népsűrű'] <= 331.772539 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(237,93,93,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Népsűrű'] >= 331.772539 && feature.properties['Népsűrű'] <= 492.857143 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(233,52,52,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Népsűrű'] >= 492.857143 && feature.properties['Népsűrű'] <= 687.589589 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,12,12,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Népsűrű'] >= 687.589589 && feature.properties['Népsűrű'] <= 978.941035 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,0,0,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Népsűrű'] >= 978.941035 && feature.properties['Népsűrű'] <= 1800.695652 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(163,0,0,1.0)',
+                interactive: true,
+            }
+            }
+            if (feature.properties['Népsűrű'] >= 1800.695652 && feature.properties['Népsűrű'] <= 3223.999314 ) {
+                return {
+                pane: 'pane_Nepsuruseg_2',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(126,0,0,1.0)',
+                interactive: true,
+            }
+            }
+        }
+        map.createPane('pane_Nepsuruseg_2');
+        map.getPane('pane_Nepsuruseg_2').style.zIndex = 402;
+        map.getPane('pane_Nepsuruseg_2').style['mix-blend-mode'] = 'normal';
+        var layer_Nepsuruseg_2 = new L.geoJson(json_Nepsuruseg_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Nepsuruseg_2',
+            layerName: 'layer_Nepsuruseg_2',
+            pane: 'pane_Nepsuruseg_2',
+            onEachFeature: pop_Nepsuruseg_2,
+            style: style_Nepsuruseg_2_0,
+        });
+        bounds_group.addLayer(layer_Nepsuruseg_2);
+        map.addLayer(layer_Nepsuruseg_2);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'Nepsuruseg<br /><table><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_2400.png" /></td><td>2 - 40</td></tr><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_40781.png" /></td><td>40 - 78</td></tr><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_781362.png" /></td><td>78 - 136</td></tr><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_1362203.png" /></td><td>136 - 220</td></tr><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_2203324.png" /></td><td>220 - 332</td></tr><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_3324935.png" /></td><td>332 - 493</td></tr><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_4936886.png" /></td><td>493 - 688</td></tr><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_6889797.png" /></td><td>688 - 979</td></tr><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_97918018.png" /></td><td>979 - 1801</td></tr><tr><td style="text-align: center;"><img src="legend/Nepsuruseg_2_180132249.png" /></td><td>1801 - 3224</td></tr></table>': layer_Nepsuruseg_2,'FeminitasiArany<br /><table><tr><td style="text-align: center;"><img src="legend/FeminitasiArany_1_28610000.png" /></td><td>286 - 1000</td></tr><tr><td style="text-align: center;"><img src="legend/FeminitasiArany_1_100018571.png" /></td><td>1000 - 1857</td></tr></table>': layer_FeminitasiArany_1,"OSM Standard": layer_OSMStandard_0,}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_Nepsuruseg_2,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'Megnevezé'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        </script>
+    </body>
+</html>
